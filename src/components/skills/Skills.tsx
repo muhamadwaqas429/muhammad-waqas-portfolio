@@ -1,43 +1,86 @@
-// src/components/skills/Skills.tsx
 "use client";
 
-import SkillCard from "./SkillCard";
-import { motion } from "framer-motion";
+import SkillsBackground from "@/components/skills/SkillsBackground";
+import SkillsCard from "@/components/skills/SkillsCard";
 
 export default function Skills() {
-  const skills = [
-    "JavaScript",
-    "TypeScript",
-    "React.js",
-    "Next.js",
-    "Node.js",
-    "Express.js",
-    "MongoDB",
-    "HTML/CSS",
-    "TailwindCSS",
-    "Framer Motion",
-    "Three.js",
-    "Git/GitHub",
-  ];
-
   return (
-    <section className="w-full min-h-screen flex flex-col justify-center items-center bg-black/95 text-white px-6 py-20 relative overflow-hidden">
-      {/* Subtle background gradient & animated tech particles */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 opacity-60 -z-20"></div>
+    <section
+      id="skills"
+      className="
+        relative
+        min-h-screen
+        w-full
+        overflow-hidden
+        flex
+        items-center
+        py-24
+        px-6
+      "
+    >
+      {/* Background (UNCHANGED) */}
+      <SkillsBackground />
 
-      <motion.h2
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="text-4xl md:text-5xl font-bold mb-12 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400"
-      >
-        My Skills
-      </motion.h2>
+      {/* Content */}
+      <div className="relative z-10 max-w-6xl mx-auto w-full">
+        <div className="mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-white">
+            Core Technical Skills
+          </h2>
+          <p className="mt-4 text-white/60 max-w-2xl">
+            Technologies I use together to design, build, and scale real-world
+            web applications.
+          </p>
+        </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
-        {skills.map((skill) => (
-          <SkillCard key={skill} skill={skill} />
-        ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <SkillsCard
+            title="Full-Stack Application Development"
+            description="Building production-ready web applications using modern frontend frameworks connected to scalable backend services."
+            stack={[
+              "Next.js",
+              "React",
+              "JavaScript (ES6+)",
+              "Node.js",
+              "Express.js",
+            ]}
+          />
+
+          <SkillsCard
+            title="Backend Architecture & APIs"
+            description="Designing secure RESTful APIs with authentication, file handling, and clean server-side architecture."
+            stack={[
+              "Node.js",
+              "Express.js",
+              "REST APIs",
+              "JWT Authentication",
+              "Multer",
+            ]}
+          />
+
+          <SkillsCard
+            title="Database & Data Modeling"
+            description="Managing application data with schema design, validation, and efficient querying for real-world use cases."
+            stack={[
+              "MongoDB",
+              "Mongoose",
+              "Schema Design",
+              "Data Relationships",
+            ]}
+          />
+
+          <SkillsCard
+            title="State, Styling & Collaboration"
+            description="Managing application state, building responsive UI, and working efficiently in team-based environments."
+            stack={[
+              "Redux Toolkit",
+              "Context API",
+              "Tailwind CSS",
+              "Git",
+              "GitHub",
+            ]}
+          />
+        </div>
       </div>
     </section>
   );
