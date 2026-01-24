@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef } from "react";
+
 interface SkillsCardProps {
   title: string;
   description: string;
@@ -9,83 +11,95 @@ interface SkillsCardProps {
 export default function SkillsCard({
   title,
   description,
-  stack,
+  stack = [],
 }: SkillsCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!cardRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const rotateX = (y / rect.height - 0.5) * -10;
+    const rotateY = (x / rect.width - 0.5) * 10;
+
+    cardRef.current.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
+  }
+
+  function resetTilt() {
+    if (!cardRef.current) return;
+    cardRef.current.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+  }
+
   return (
     <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={resetTilt}
       className="
         group
         relative
-        overflow-hidden
         rounded-2xl
         border border-white/10
-        bg-[#020617]/90
-        p-7
-        backdrop-blur
-        transition
-        hover:border-cyan-400/30
+        bg-white/5
+        backdrop-blur-xl
+        p-8
+        transition-all
+        duration-500
+        transform-gpu
+        hover:border-indigo-400/40
+        shadow-xl
+        hover:shadow-indigo-500/30
       "
+      style={{ transformStyle: "preserve-3d" }}
     >
-      {/* Accent strip (identity) */}
-      <span
-        className="
-          absolute
-          left-0
-          top-0
-          h-full
-          w-[3px]
-          bg-gradient-to-b
-          from-cyan-400/80
-          via-indigo-400/60
-          to-transparent
-          opacity-60
-        "
-      />
+      {/* Glow Overlay */}
+      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition bg-gradient-to-br from-indigo-500/20 via-purple-500/10 to-pink-500/20 blur-xl pointer-events-none" />
 
-      {/* Soft glow */}
+      {/* Title */}
+      <h3
+        className="text-xl font-semibold text-white tracking-tight"
+        style={{ transform: "translateZ(40px)" }}
+      >
+        {title}
+      </h3>
+
+      {/* Description */}
+      <p
+        className="mt-3 text-sm text-white/60 leading-relaxed"
+        style={{ transform: "translateZ(30px)" }}
+      >
+        {description}
+      </p>
+
+      {/* Stack Pills */}
       <div
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-          bg-gradient-to-br
-          from-cyan-400/5
-          via-transparent
-          to-transparent
-          opacity-0
-          group-hover:opacity-100
-          transition
-        "
-      />
-
-      {/* Content */}
-      <div className="relative z-10">
-        <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
-
-        <p className="text-sm text-white/60 leading-relaxed mb-6">
-          {description}
-        </p>
-
-        <div className="flex flex-wrap gap-2">
-          {stack.map((item) => (
-            <span
-              key={item}
-              className="
-                text-xs
-                px-3
-                py-1
-                rounded-full
-                border border-white/10
-                bg-white/5
-                text-white/70
-                group-hover:border-cyan-400/30
-                transition
-              "
-            >
-              {item}
-            </span>
-          ))}
-        </div>
+        className="mt-6 flex flex-wrap gap-2"
+        style={{ transform: "translateZ(50px)" }}
+      >
+        {stack.map((item, index) => (
+          <span
+            key={index}
+            className="
+              text-xs
+              px-3
+              py-1
+              rounded-full
+              border border-white/10
+              bg-white/5
+              text-white/70
+              backdrop-blur-md
+              transition
+              hover:bg-indigo-500/30
+              hover:border-indigo-400/50
+              hover:text-white
+            "
+          >
+            {item}
+          </span>
+        ))}
       </div>
     </div>
   );

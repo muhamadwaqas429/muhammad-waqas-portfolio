@@ -14,29 +14,30 @@ export default function Skills() {
         overflow-hidden
         flex
         items-center
-        py-24
+        py-28
         px-6
       "
     >
-      {/* Background (UNCHANGED) */}
+      {/* Background */}
       <SkillsBackground />
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto w-full">
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white">
-            Core Technical Skills
+        {/* Header */}
+        <div className="mb-20">
+          <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+            Core Engineering Skills
           </h2>
-          <p className="mt-4 text-white/60 max-w-2xl">
-            Technologies I use together to design, build, and scale real-world
-            web applications.
+          <p className="mt-4 text-white/60 max-w-2xl text-lg">
+            Production-ready technologies I use to build scalable, high-performance web applications.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Skills Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <SkillsCard
             title="Full-Stack Application Development"
-            description="Building production-ready web applications using modern frontend frameworks connected to scalable backend services."
+            description="Designing modern, scalable web applications using Next.js, React, and Node.js with real-world architecture."
             stack={[
               "Next.js",
               "React",
@@ -48,7 +49,7 @@ export default function Skills() {
 
           <SkillsCard
             title="Backend Architecture & APIs"
-            description="Designing secure RESTful APIs with authentication, file handling, and clean server-side architecture."
+            description="Building secure REST APIs with authentication, file uploads, and production-ready backend logic."
             stack={[
               "Node.js",
               "Express.js",
@@ -59,19 +60,19 @@ export default function Skills() {
           />
 
           <SkillsCard
-            title="Database & Data Modeling"
-            description="Managing application data with schema design, validation, and efficient querying for real-world use cases."
+            title="Database & Cloud Engineering"
+            description="Designing scalable data models and managing cloud storage with efficient backend integration."
             stack={[
               "MongoDB",
               "Mongoose",
               "Schema Design",
-              "Data Relationships",
+              "Cloudinary",
             ]}
           />
 
           <SkillsCard
-            title="State, Styling & Collaboration"
-            description="Managing application state, building responsive UI, and working efficiently in team-based environments."
+            title="State Management & UI Engineering"
+            description="Building responsive interfaces, managing application state, and collaborating in real-world team workflows."
             stack={[
               "Redux Toolkit",
               "Context API",
