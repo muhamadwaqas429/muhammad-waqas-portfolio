@@ -15,6 +15,7 @@ export default function Home() {
     Hero: heroRef,
     Skills: skillsRef,
     Projects: projectsRef,
+    
   };
 
   return (
