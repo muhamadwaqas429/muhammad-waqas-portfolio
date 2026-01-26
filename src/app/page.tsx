@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Hero from "@/components/hero/Hero";
 import Skills from "@/components/skills/Skills";
 import { Navbar } from "@/components/navbar/Navbar";
-import ProjectsSection from "@/components/projects/ProjectsSection";
+import ProjectsSection from "@/components/projects/ProjectSection";
 
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
@@ -33,7 +33,11 @@ export default function Home() {
         <Skills />
       </section>
 
-      <section id="projects" className="relative min-h-screen">
+      <section
+        ref={projectsRef}
+        id="projects"
+        className="relative w-full min-h-screen"
+      >
         <ProjectsSection />
       </section>
     </>
