@@ -1,27 +1,30 @@
 "use client";
 
 import ExperienceBackground from "./ExperienceBackground";
-import ExperienceTimeline from "./ExperienceTimeline";
+import ExperienceStoryCard from "./ExperienceStoryCard";
+import { experiences } from "./experienceData";
 import { motion } from "framer-motion";
 
 export default function ExperienceSection() {
   return (
-    <section className="relative min-h-screen py-36 overflow-hidden">
+    <section className="relative min-h-screen overflow-hidden">
       <ExperienceBackground />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
-        <motion.h2
-          initial={{ opacity: 0, y: 50 }}
+      <div className="relative z-10 pt-44 pb-36 space-y-32 max-w-6xl mx-auto px-6">
+        <motion.h1
+          className="text-center text-5xl md:text-6xl font-extrabold text-white"
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="text-5xl md:text-6xl font-extrabold text-center text-white mb-24"
         >
-          Experience
-          <span className="block text-purple-400 text-lg mt-3 font-medium">
-            Real Work. Real Impact. Real Skill.
+          Career Journey
+          <span className="block text-pink-400 text-lg mt-3 font-medium">
+            From QA → ERP → Full-Stack Engineer
           </span>
-        </motion.h2>
+        </motion.h1>
 
-        <ExperienceTimeline />
+        {experiences.map((exp, index) => (
+          <ExperienceStoryCard key={index} exp={exp} />
+        ))}
       </div>
     </section>
   );

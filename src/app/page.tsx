@@ -5,17 +5,17 @@ import Hero from "@/components/hero/Hero";
 import Skills from "@/components/skills/Skills";
 import { Navbar } from "@/components/navbar/Navbar";
 import ProjectsSection from "@/components/projects/ProjectsSection";
-
+import ExperienceSection from "@/components/experience/ExperienceSection";
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const skillsRef = useRef<HTMLElement>(null);
   const projectsRef = useRef<HTMLElement>(null);
-
+  const experienceRef = useRef<HTMLElement>(null);
   const sections = {
     Hero: heroRef,
     Skills: skillsRef,
     Projects: projectsRef,
-    
+    Experience: experienceRef,
   };
 
   return (
@@ -36,6 +36,9 @@ export default function Home() {
 
       <section id="projects" className="relative min-h-screen">
         <ProjectsSection />
+      </section>
+      <section id="experience" className="relative w-full min-h-screen">
+        <ExperienceSection />
       </section>
     </>
   );
