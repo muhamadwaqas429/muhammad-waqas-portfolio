@@ -6,6 +6,7 @@ import Skills from "@/components/skills/Skills";
 import { Navbar } from "@/components/navbar/Navbar";
 import ProjectsSection from "@/components/projects/ProjectsSection";
 import ExperienceSection from "@/components/experience/ExperienceSection";
+import EducationSection from "@/components/education/EducationSection";
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const skillsRef = useRef<HTMLElement>(null);
@@ -39,6 +40,9 @@ export default function Home() {
       </section>
       <section id="experience" className="relative w-full min-h-screen">
         <ExperienceSection />
+      </section>
+      <section id="education" className="relative min-h-screen">
+        <EducationSection />
       </section>
     </>
   );
