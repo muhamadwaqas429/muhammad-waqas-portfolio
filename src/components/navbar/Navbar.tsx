@@ -6,7 +6,7 @@ import { NavItem } from "./NavItem";
 import { NavbarMobile } from "./NavbarMobile";
 
 interface NavbarProps {
-  sections: Record<string, React.RefObject<HTMLElement> | null>;
+  sections: Record<string, React.RefObject<HTMLElement | null>>;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ sections }) => {
@@ -19,9 +19,11 @@ export const Navbar: React.FC<NavbarProps> = ({ sections }) => {
 
       let current = "";
       for (const [key, ref] of Object.entries(sections)) {
-        if (ref && ref.current) {
+        if (ref.current) {
           const top = ref.current.getBoundingClientRect().top;
-          if (top <= window.innerHeight / 2) current = key;
+          if (top <= window.innerHeight / 2) {
+            current = key;
+          }
         }
       }
       setActive(current);
@@ -37,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({ sections }) => {
         ${scrolled ? "shadow-xl backdrop-brightness-110" : ""}`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
-        {/* Logo on left */}
+        {/* Logo */}
         <div className="flex items-center gap-3 z-50">
           <Image
             src="/logo.png"
@@ -51,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ sections }) => {
           </span>
         </div>
 
-        {/* Desktop Links */}
+        {/* Desktop nav */}
         <div className="hidden lg:flex gap-6">
           {Object.keys(sections).map((sec) => (
             <NavItem
@@ -60,14 +62,15 @@ export const Navbar: React.FC<NavbarProps> = ({ sections }) => {
               active={active === sec}
               onClick={() => {
                 const ref = sections[sec];
-                if (ref && ref.current)
+                if (ref?.current) {
                   ref.current.scrollIntoView({ behavior: "smooth" });
+                }
               }}
             />
           ))}
         </div>
 
-        {/* Mobile Hamburger separated on right */}
+        {/* Mobile nav */}
         <div className="lg:hidden z-50">
           <NavbarMobile sections={sections} />
         </div>
