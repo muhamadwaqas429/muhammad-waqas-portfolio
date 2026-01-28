@@ -1,25 +1,40 @@
 "use client";
 
 import { useRef } from "react";
+import dynamic from "next/dynamic";
+
 import Hero from "@/components/hero/Hero";
 import Skills from "@/components/skills/Skills";
 import { Navbar } from "@/components/navbar/Navbar";
-import ProjectsSection from "@/components/projects/ProjectsSection";
-import ExperienceSection from "@/components/experience/ExperienceSection";
-import EducationSection from "@/components/education/EducationSection";
-import ContactSection from "@/components/contact/ContactSection";
+
+// Lazy-load heavy sections (performance boost)
+const ProjectsSection = dynamic(
+  () => import("@/components/projects/ProjectsSection"),
+  { ssr: false },
+);
+const ExperienceSection = dynamic(
+  () => import("@/components/experience/ExperienceSection"),
+  { ssr: false },
+);
+const EducationSection = dynamic(
+  () => import("@/components/education/EducationSection"),
+  { ssr: false },
+);
+const ContactSection = dynamic(
+  () => import("@/components/contact/ContactSection"),
+  { ssr: false },
+);
 
 export default function Home() {
-  // References for smooth scrolling
-  const heroRef = useRef<HTMLElement>(null);
-  const skillsRef = useRef<HTMLElement>(null);
-  const projectsRef = useRef<HTMLElement>(null);
-  const experienceRef = useRef<HTMLElement>(null);
-  const educationRef = useRef<HTMLElement>(null);
-  const contactRef = useRef<HTMLElement>(null);
+  const heroRef = useRef<HTMLElement | null>(null);
+  const skillsRef = useRef<HTMLElement | null>(null);
+  const projectsRef = useRef<HTMLElement | null>(null);
+  const experienceRef = useRef<HTMLElement | null>(null);
+  const educationRef = useRef<HTMLElement | null>(null);
+  const contactRef = useRef<HTMLElement | null>(null);
 
-  // Sections object to pass to Navbar
-  const sections = {
+  // ✅ Type-safe navbar sections
+  const sections: Record<string, React.RefObject<HTMLElement | null>> = {
     Hero: heroRef,
     Skills: skillsRef,
     Projects: projectsRef,
@@ -33,12 +48,12 @@ export default function Home() {
       {/* Navbar */}
       <Navbar sections={sections} />
 
-      {/* Hero Section */}
+      {/* Hero */}
       <section ref={heroRef} id="hero" className="relative w-full h-screen">
         <Hero />
       </section>
 
-      {/* Skills Section */}
+      {/* Skills */}
       <section
         ref={skillsRef}
         id="skills"
@@ -47,7 +62,7 @@ export default function Home() {
         <Skills />
       </section>
 
-      {/* Projects Section */}
+      {/* Projects */}
       <section
         ref={projectsRef}
         id="projects"
@@ -56,7 +71,7 @@ export default function Home() {
         <ProjectsSection />
       </section>
 
-      {/* Experience Section */}
+      {/* Experience */}
       <section
         ref={experienceRef}
         id="experience"
@@ -65,21 +80,17 @@ export default function Home() {
         <ExperienceSection />
       </section>
 
-      {/* Education Section */}
+      {/* Education */}
       <section
         ref={educationRef}
         id="education"
-        className="relative w-full min-h-screen"
+        className="relative min-h-screen"
       >
         <EducationSection />
       </section>
 
-      {/* Contact Section */}
-      <section
-        ref={contactRef}
-        id="contact"
-        className="relative w-full min-h-screen"
-      >
+      {/* Contact */}
+      <section ref={contactRef} id="contact" className="relative min-h-screen">
         <ContactSection />
       </section>
     </>

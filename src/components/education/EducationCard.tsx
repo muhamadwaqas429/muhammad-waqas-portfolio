@@ -5,23 +5,25 @@ import { motion } from "framer-motion";
 export default function EducationCard({ edu }: { edu: any }) {
   return (
     <motion.div
-      className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-xl space-y-4 hover:scale-105 transition-transform duration-500"
-      initial={{ opacity: 0, y: 60 }}
+      className="bg-gradient-to-r from-blue-900/40 via-purple-900/30 to-pink-900/30 border border-white/10 rounded-2xl p-6 shadow-xl backdrop-blur-md max-w-md mx-auto"
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.9 }}
     >
-      <h2 className="text-2xl md:text-3xl font-bold text-white">
+      <h3 className="text-2xl md:text-3xl font-bold text-white">
         {edu.degree}
-      </h2>
-      <p className="text-pink-400 font-semibold">
-        {edu.university} | {edu.location}
-      </p>
-      <p className="text-gray-300 italic">{edu.duration}</p>
+      </h3>
+      <p className="text-pink-400 font-medium mt-1">{edu.institution}</p>
+      <p className="text-gray-300 text-sm mt-1">{edu.period}</p>
+      <p className="text-gray-400 text-sm">{edu.location}</p>
 
-      <ul className="grid md:grid-cols-2 gap-2 text-gray-200 mt-2">
-        {edu.courses.map((course: string) => (
-          <li key={course} className="px-4 py-2 rounded-xl bg-white/10">
+      <ul className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2 text-gray-200">
+        {edu.courses.map((course: string, idx: number) => (
+          <li
+            key={idx}
+            className="bg-white/10 rounded-lg px-3 py-1 text-sm backdrop-blur"
+          >
             {course}
           </li>
         ))}
