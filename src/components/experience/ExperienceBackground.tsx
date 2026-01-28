@@ -4,77 +4,101 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useRef, useMemo } from "react";
 import * as THREE from "three";
 
-function EnergyCore() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const geometry = useMemo(() => new THREE.IcosahedronGeometry(7, 2), []);
 
-  useFrame(({ clock, mouse }) => {
-    if (!meshRef.current) return;
-
-    meshRef.current.rotation.y = clock.elapsedTime * 0.05 + mouse.x * 0.3;
-    meshRef.current.rotation.x = clock.elapsedTime * 0.03 + mouse.y * 0.3;
-
-    const scale = 1 + Math.sin(clock.elapsedTime * 1.2) * 0.05;
-    meshRef.current.scale.set(scale, scale, scale);
-  });
-
-  return (
-    <mesh ref={meshRef} geometry={geometry}>
-      <meshStandardMaterial
-        wireframe
-        color="#8b5cf6"
-        emissive="#ec4899"
-        transparent
-        opacity={0.18}
-      />
-    </mesh>
-  );
-}
-
-function CosmicParticles() {
+function ExperienceParticles() {
   const pointsRef = useRef<THREE.Points>(null);
+  const count = 600;
 
   const positions = useMemo(() => {
-    const arr = new Float32Array(1800 * 3);
-    for (let i = 0; i < arr.length; i++) {
-      arr[i] = (Math.random() - 0.5) * 60;
+    const arr = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      arr[i * 3] = (Math.random() - 0.5) * 25;
+      arr[i * 3 + 1] = (Math.random() - 0.5) * 15;
+      arr[i * 3 + 2] = (Math.random() - 0.5) * 25;
     }
     return arr;
   }, []);
 
-  useFrame(({ mouse }) => {
+  useFrame(({ clock, mouse }) => {
     if (!pointsRef.current) return;
-    pointsRef.current.rotation.y += 0.0005 + mouse.x * 0.001;
-    pointsRef.current.rotation.x += 0.0003 + mouse.y * 0.001;
+    pointsRef.current.rotation.y = clock.elapsedTime * 0.03 + mouse.x * 0.2;
+    pointsRef.current.rotation.x = clock.elapsedTime * 0.02 + mouse.y * 0.2;
   });
 
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          array={positions}
-          count={positions.length / 3}
-          itemSize={3}
-        />
+        {/* ✅ Correct usage: args prop */}
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
-
-      <pointsMaterial size={0.05} color="#f472b6" opacity={0.6} transparent />
+      <pointsMaterial
+        color="#facc15"
+        size={0.08}
+        sizeAttenuation
+        transparent
+        opacity={0.2}
+      />
     </points>
+  );
+}
+
+
+function ExperienceRings() {
+  const meshRefs = useRef<THREE.Mesh[]>([]);
+
+  const rings = useMemo(
+    () =>
+      Array.from({ length: 5 }, (_, i) => ({
+        rotationSpeed: 0.01 + i * 0.002,
+        yOffset: -i * 1.5,
+        scale: 1 + i * 0.5,
+        color: new THREE.Color(`hsl(${i * 60}, 80%, 50%)`),
+      })),
+    [],
+  );
+
+  useFrame(({ clock }) => {
+    meshRefs.current.forEach((mesh, i) => {
+      if (!mesh) return;
+      mesh.rotation.z = clock.elapsedTime * rings[i].rotationSpeed;
+    });
+  });
+
+  return (
+    <>
+      {rings.map((ring, i) => (
+        <mesh
+          key={i}
+          ref={(el) => {
+            if (el) meshRefs.current[i] = el;
+          }}
+          position={[0, ring.yOffset, 0]}
+          scale={[ring.scale, ring.scale, ring.scale]}
+        >
+          <torusGeometry args={[3, 0.05, 16, 100]} />
+          <meshStandardMaterial
+            color={ring.color}
+            emissive={ring.color}
+            transparent
+            opacity={0.15}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      ))}
+    </>
   );
 }
 
 export default function ExperienceBackground() {
   return (
     <div className="absolute inset-0 z-0">
-      <Canvas camera={{ position: [0, 0, 22], fov: 70 }}>
-        <color attach="background" args={["#020617"]} />
+      <Canvas camera={{ position: [0, 0, 18], fov: 65 }}>
+        <color attach="background" args={["#0f172a"]} />
+        <ambientLight intensity={0.7} />
+        <pointLight position={[10, 10, 10]} intensity={1.2} />
 
-        <ambientLight intensity={0.6} />
-        <pointLight position={[10, 10, 10]} intensity={1.2} color="#a78bfa" />
-
-        <EnergyCore />
-        <CosmicParticles />
+        <ExperienceParticles />
+        <ExperienceRings />
       </Canvas>
     </div>
   );

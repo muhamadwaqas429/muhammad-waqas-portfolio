@@ -7,7 +7,7 @@ import Hero from "@/components/hero/Hero";
 import Skills from "@/components/skills/Skills";
 import { Navbar } from "@/components/navbar/Navbar";
 
-// Lazy-load heavy sections (performance boost)
+
 const ProjectsSection = dynamic(
   () => import("@/components/projects/ProjectsSection"),
   { ssr: false },
@@ -26,6 +26,7 @@ const ContactSection = dynamic(
 );
 
 export default function Home() {
+ 
   const heroRef = useRef<HTMLElement | null>(null);
   const skillsRef = useRef<HTMLElement | null>(null);
   const projectsRef = useRef<HTMLElement | null>(null);
@@ -33,7 +34,7 @@ export default function Home() {
   const educationRef = useRef<HTMLElement | null>(null);
   const contactRef = useRef<HTMLElement | null>(null);
 
-  // ✅ Type-safe navbar sections
+  
   const sections: Record<string, React.RefObject<HTMLElement | null>> = {
     Hero: heroRef,
     Skills: skillsRef,
@@ -45,15 +46,15 @@ export default function Home() {
 
   return (
     <>
-      {/* Navbar */}
+      
       <Navbar sections={sections} />
 
-      {/* Hero */}
+     
       <section ref={heroRef} id="hero" className="relative w-full h-screen">
         <Hero />
       </section>
 
-      {/* Skills */}
+     
       <section
         ref={skillsRef}
         id="skills"
@@ -62,7 +63,7 @@ export default function Home() {
         <Skills />
       </section>
 
-      {/* Projects */}
+     
       <section
         ref={projectsRef}
         id="projects"
@@ -71,7 +72,7 @@ export default function Home() {
         <ProjectsSection />
       </section>
 
-      {/* Experience */}
+    
       <section
         ref={experienceRef}
         id="experience"
@@ -80,7 +81,7 @@ export default function Home() {
         <ExperienceSection />
       </section>
 
-      {/* Education */}
+      
       <section
         ref={educationRef}
         id="education"
@@ -89,7 +90,7 @@ export default function Home() {
         <EducationSection />
       </section>
 
-      {/* Contact */}
+     
       <section ref={contactRef} id="contact" className="relative min-h-screen">
         <ContactSection />
       </section>
