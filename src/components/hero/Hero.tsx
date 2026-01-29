@@ -1,4 +1,3 @@
-// src/components/hero/Hero.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -34,13 +33,15 @@ export default function Hero() {
             Aspiring Full-Stack JavaScript Developer | MERN Stack
           </motion.p>
 
+          {/* Updated Buttons */}
           <HeroActions
-            onClickDeveloper={() => alert("Developer role clicked!")}
-            onClickFreelancer={() => alert("Freelancer role clicked!")}
+            email="waqas@example.com" // replace with your real email
+            github="https://github.com/muhamadwaqas429"
+            whatsapp="https://wa.me/923015156142"
           />
         </div>
 
-        {/* Right: Image */}
+        {/* Right: 3D Image */}
         <div className="flex-1 z-10 flex justify-center items-center mt-10 md:mt-0">
           <Hero3DImage />
         </div>
