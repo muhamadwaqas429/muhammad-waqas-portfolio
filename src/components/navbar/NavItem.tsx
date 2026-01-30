@@ -1,25 +1,37 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 
 interface NavItemProps {
   name: string;
   onClick: () => void;
   active?: boolean;
+  variant?: "desktop" | "mobile";
 }
 
-export const NavItem: React.FC<NavItemProps> = ({ name, onClick, active }) => {
+export const NavItem: React.FC<NavItemProps> = ({
+  name,
+  onClick,
+  active,
+  variant = "desktop",
+}) => {
   return (
     <motion.button
-      whileHover={{ scale: 1.1, color: "#00fff0" }}
-      whileTap={{ scale: 0.95 }}
+      whileTap={{ scale: 0.96 }}
       onClick={onClick}
-      className="text-white text-xl md:text-2xl font-semibold relative focus:outline-none"
+      className={`
+        w-full text-center font-medium tracking-wide
+        ${
+          variant === "desktop"
+            ? "text-white text-lg hover:text-cyan-400"
+            : "text-white text-2xl py-4"
+        }
+      `}
     >
       {name}
-      {active && (
-        <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-cyan-400 rounded" />
+
+      {active && variant === "desktop" && (
+        <span className="block mx-auto mt-1 h-[2px] w-6 bg-cyan-400 rounded" />
       )}
     </motion.button>
   );

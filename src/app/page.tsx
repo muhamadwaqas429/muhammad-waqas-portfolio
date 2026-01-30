@@ -7,26 +7,26 @@ import Hero from "@/components/hero/Hero";
 import Skills from "@/components/skills/Skills";
 import { Navbar } from "@/components/navbar/Navbar";
 
-
+// Dynamically imported sections
 const ProjectsSection = dynamic(
   () => import("@/components/projects/ProjectsSection"),
-  { ssr: false },
+  { ssr: false }
 );
 const ExperienceSection = dynamic(
   () => import("@/components/experience/ExperienceSection"),
-  { ssr: false },
+  { ssr: false }
 );
 const EducationSection = dynamic(
   () => import("@/components/education/EducationSection"),
-  { ssr: false },
+  { ssr: false }
 );
 const ContactSection = dynamic(
   () => import("@/components/contact/ContactSection"),
-  { ssr: false },
+  { ssr: false }
 );
 
 export default function Home() {
- 
+  // Refs for smooth scrolling
   const heroRef = useRef<HTMLElement | null>(null);
   const skillsRef = useRef<HTMLElement | null>(null);
   const projectsRef = useRef<HTMLElement | null>(null);
@@ -34,7 +34,6 @@ export default function Home() {
   const educationRef = useRef<HTMLElement | null>(null);
   const contactRef = useRef<HTMLElement | null>(null);
 
-  
   const sections: Record<string, React.RefObject<HTMLElement | null>> = {
     Hero: heroRef,
     Skills: skillsRef,
@@ -46,54 +45,64 @@ export default function Home() {
 
   return (
     <>
-      
+      {/* Navbar */}
       <Navbar sections={sections} />
 
-     
-      <section ref={heroRef} id="hero" className="relative w-full h-screen">
-        <Hero />
-      </section>
+      <main className="relative z-0">
+        {/* Hero */}
+        <section
+          ref={heroRef}
+          id="hero"
+          className="relative w-full h-screen z-0"
+        >
+          <Hero />
+        </section>
 
-     
-      <section
-        ref={skillsRef}
-        id="skills"
-        className="relative w-full min-h-screen bg-[#020617]"
-      >
-        <Skills />
-      </section>
+        {/* Skills */}
+        <section
+          ref={skillsRef}
+          id="skills"
+          className="relative w-full min-h-screen bg-[#020617] z-0"
+        >
+          <Skills />
+        </section>
 
-     
-      <section
-        ref={projectsRef}
-        id="projects"
-        className="relative min-h-screen"
-      >
-        <ProjectsSection />
-      </section>
+        {/* Projects */}
+        <section
+          ref={projectsRef}
+          id="projects"
+          className="relative min-h-screen z-0"
+        >
+          <ProjectsSection />
+        </section>
 
-    
-      <section
-        ref={experienceRef}
-        id="experience"
-        className="relative w-full min-h-screen"
-      >
-        <ExperienceSection />
-      </section>
+        {/* Experience */}
+        <section
+          ref={experienceRef}
+          id="experience"
+          className="relative w-full min-h-screen z-0"
+        >
+          <ExperienceSection />
+        </section>
 
-      
-      <section
-        ref={educationRef}
-        id="education"
-        className="relative min-h-screen"
-      >
-        <EducationSection />
-      </section>
+        {/* Education */}
+        <section
+          ref={educationRef}
+          id="education"
+          className="relative min-h-screen z-0"
+        >
+          <EducationSection />
+        </section>
 
-     
-      <section ref={contactRef} id="contact" className="relative min-h-screen">
-        <ContactSection />
-      </section>
+        {/* Contact */}
+        <section
+          ref={contactRef}
+          id="contact"
+          className="relative min-h-screen z-0"
+        >
+          <ContactSection />
+        </section>
+      </main>
     </>
   );
 }

@@ -8,12 +8,10 @@ import Hero3DImage from "./Hero3DImage";
 export default function Hero() {
   return (
     <section className="relative w-full h-screen flex">
-      {/* Full-screen background */}
       <HeroBackground />
 
-      {/* Content overlay */}
-      <div className="absolute inset-0 flex flex-col md:flex-row justify-center items-center px-6">
-        {/* Left: Text */}
+      {/* Add top padding equal to navbar height */}
+      <div className="absolute inset-0 flex flex-col md:flex-row justify-center items-center px-6 pt-[80px] md:pt-[100px]">
         <div className="flex-1 z-10 flex flex-col justify-center items-start text-left">
           <motion.h1
             initial={{ opacity: 0, x: -50 }}
@@ -33,15 +31,13 @@ export default function Hero() {
             Aspiring Full-Stack JavaScript Developer | MERN Stack
           </motion.p>
 
-          {/* Updated Buttons */}
           <HeroActions
-            email="waqas@example.com" // replace with your real email
+            email="waqas@example.com"
             github="https://github.com/muhamadwaqas429"
             whatsapp="https://wa.me/923015156142"
           />
         </div>
 
-        {/* Right: 3D Image */}
         <div className="flex-1 z-10 flex justify-center items-center mt-10 md:mt-0">
           <Hero3DImage />
         </div>

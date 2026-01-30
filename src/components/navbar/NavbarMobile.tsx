@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
-import { NavItem } from "./NavItem";
-import Image from "next/image";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Menu } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { NavItem } from "./NavItem";
+import { scrollToSection } from "./navbar-utils";
 
 interface NavbarMobileProps {
   sections: Record<string, React.RefObject<HTMLElement | null>>;
@@ -12,82 +13,93 @@ interface NavbarMobileProps {
 
 export const NavbarMobile: React.FC<NavbarMobileProps> = ({ sections }) => {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const handleLinkClick = (ref: React.RefObject<HTMLElement | null>) => {
-    if (ref.current) {
-      ref.current.scrollIntoView({ behavior: "smooth" });
-    }
-    setOpen(false);
-  };
+  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "auto";
+  }, [open]);
+
+  if (!mounted) return null;
 
   return (
     <>
-      {/* Hamburger icon */}
+      {/* Hamburger */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed top-4 right-4 z-50 text-white p-2 rounded-md hover:bg-white/10 transition"
+        className="p-2 text-white"
         aria-label="Open menu"
       >
         <Menu size={28} />
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.6 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black z-40 backdrop-blur-sm"
-              onClick={() => setOpen(false)}
-            />
-
-            {/* Slide-in panel */}
-            <motion.div
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed top-0 left-0 w-full h-full z-50 flex flex-col items-center justify-center gap-12 bg-white/5 backdrop-blur-xl p-6"
-            >
-              {/* Close button */}
-              <button
+      {createPortal(
+        <AnimatePresence>
+          {open && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                className="fixed inset-0 z-[9998] bg-black/40 backdrop-blur-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 onClick={() => setOpen(false)}
-                className="absolute top-6 right-6 text-white hover:text-cyan-400 transition"
-                aria-label="Close menu"
+              />
+
+              {/* Panel */}
+              <motion.aside
+                className="
+                  fixed top-0 right-0 z-[9999]
+                  h-[100svh] w-[85%] max-w-sm
+                  bg-gradient-to-b from-[#0b0f1a]/95 to-[#020617]/95
+                  backdrop-blur-xl
+                  shadow-2xl
+                  border-l border-white/10
+                "
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
               >
-                <X size={28} />
-              </button>
+                {/* Header */}
+                <div className="flex items-center justify-between px-6 pt-6">
+                  <span className="text-white font-semibold tracking-wide">
+                    Menu
+                  </span>
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="text-white/80 hover:text-white"
+                  >
+                    <X size={26} />
+                  </button>
+                </div>
 
-              {/* Logo */}
-              <div className="flex items-center gap-3 mb-12">
-                <Image
-                  src="/logo.svg"
-                  alt="MW Logo"
-                  width={60}
-                  height={60}
-                  className="animate-glow"
-                />
-                <span className="text-white font-bold text-2xl tracking-wide">
-                  Muhammad Waqas
-                </span>
-              </div>
+                {/* Divider */}
+                <div className="my-6 h-px bg-white/10" />
 
-              {/* Links */}
-              <div className="flex flex-col gap-6 items-center">
-                {Object.keys(sections).map((sec) => (
-                  <NavItem
-                    key={sec}
-                    name={sec}
-                    onClick={() => handleLinkClick(sections[sec])}
-                  />
-                ))}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+                {/* Nav */}
+                <nav className="px-6">
+                  <ul className="flex flex-col gap-2">
+                    {Object.keys(sections).map((sec) => (
+                      <li key={sec}>
+                        <NavItem
+                          name={sec}
+                          variant="mobile"
+                          onClick={() => {
+                            scrollToSection(sections[sec]);
+                            setOpen(false);
+                          }}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              </motion.aside>
+            </>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
     </>
   );
 };
